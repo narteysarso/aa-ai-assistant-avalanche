@@ -1,13 +1,23 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import "@covalenthq/goldrush-kit/styles.css";
+import TimeAgo from 'javascript-time-ago';
+import en from "javascript-time-ago/locale/en.json"
+import 'mdb-react-ui-kit/dist/css/mdb.min.css';
+import "@fortawesome/fontawesome-free/css/all.min.css";
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { WsProvider } from './context/useWS';
+
+TimeAgo.addDefaultLocale(en);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App />
+    <WsProvider >
+      <App />
+    </WsProvider>
   </React.StrictMode>
 );
 
