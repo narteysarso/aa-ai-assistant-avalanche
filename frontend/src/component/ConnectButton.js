@@ -1,20 +1,18 @@
 import '@particle-network/connect-react-ui/dist/index.css';
 import { ConnectButton} from '@particle-network/connect-react-ui';
 import { Avatar, Button, Flex } from 'antd';
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import { getNativeTokenBalance } from '../service/covalent';
-import { WSContext } from '../context/useWS';
 
 export default function DefaultConnectButton() {
     //use this in react component.
     const [accountBalance, setBalance] = useState(0);
-    const {emit} = useContext(WSContext);
 
     return <ConnectButton.Custom style={{ background: "transparent" }}>
         {({ account, chain, openAccountModal, openConnectModal, openChainModal, accountLoading }) => {
            if(chain && chain.id && account) {
             getNativeTokenBalance({chain: chain.id, account}).then((balance) => setBalance(balance.substring(0, 6)));
-            emit("message", {thread_id: account, message: `My account address is ${account}, on ${chain.name} network. update your records with these details`})
+            
            }
             return (
                 <Flex>

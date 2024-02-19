@@ -7,13 +7,14 @@ import MessageCard from "./MessageCard";
 import { WSContext } from "../context/useWS";
 import MessageForm from "./MessageForm";
 import { dummyMessages } from "../utils/constants";
-import { useAccountInfo } from "@particle-network/connect-react-ui";
+import { useAccountInfo, useNetwork } from "@particle-network/connect-react-ui";
 
 const { useBreakpoint } = Grid;
 
 function Chat({ visible, style }) {
   const { isConnected, changeThreadID, addHumanMessage, messages, emit, threadId } = useContext(WSContext);
-  const { account, accountLoading } = useAccountInfo();
+  const { account, accountLoading,  } = useAccountInfo();
+  const {chain} = useNetwork()
   const ref = useRef(null);
   const screens = useBreakpoint();
 
@@ -27,6 +28,13 @@ function Chat({ visible, style }) {
     const lastChildElement = ref.current?.lastElementChild;
     lastChildElement?.scrollIntoView({ behavior: 'smooth' });
   };
+
+  useEffect(() => {
+    if(!account || !isConnected) return;
+
+    sendMessage(`My account address is ${account}, on ${chain?.name} network`);
+
+  },[account, isConnected, chain])
 
   useEffect(() => {
     if (!isConnected) {
@@ -43,7 +51,6 @@ function Chat({ visible, style }) {
   if(!account) return null;
 
   const chatWidth = screens.lg ? "40vw": screens.md ? "50vw" : screens.sm? "70vw": "90vw";
-
   return (
     <Flex vertical gap="small"  align="vertical" style={{zIndex: 3, padding: "5px 10px", borderRadius: "6px", backgroundColor: "#CDC4F9", width: chatWidth,  ...style }}>
       <Col ref={ref} md="8" style={{ height: "65vh", overflowY: "scroll" }}>

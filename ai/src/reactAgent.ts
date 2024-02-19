@@ -12,27 +12,31 @@ import { randomUUID } from "crypto";
 dotenv.config();
 
 const model = new ChatOpenAI({
-    modelName: "gpt-3.5-turbo",
+    modelName: "gpt-3.5-turbo-1106",
     temperature: 0.7,
-    maxTokens: 1000,
     verbose: true
 });
 
 
 const prompt = ChatPromptTemplate.fromTemplate(`
 
-You are an assistant. You extract relevant information from {input} and categories them into any of the following groups
+You are an assistant, You can answer user questions on the topic of blockchain, and also extract extract relevant information form input and categories them into any of the following groups
 
 Here are the groups and the data that can be extracted for each:
-
-1. account_activity - Transaction history data : 
+- store account details: user account details. store the extracted data for later use. reference this data in chat history when neccessary
+    extractable data :
+    ------------------
+        - address 
+        - chain name or network as chain_name   
+        
+- account_activity - record of past executed transaction history : 
     extractable data :
     ------------------
         - address 
         - chain name or network as chain_name 
         - size 
 
-2. transaction_data - a transfer tokens from on account to another over a network or multiple chains or networks : 
+- transaction_data - a transfer tokens from on account to another over a network or multiple chains or networks : 
     extractable data :
     ------------------
         - address of sender of the token as sender
@@ -43,14 +47,14 @@ Here are the groups and the data that can be extracted for each:
         - sender chain name or network as senerChainName
         - recipient chain name or network as recipientChainName
 
-3. token_balances - number of tokens of an account and their balances:
+- token_balances - a list of tokens in an account and their balances:
     extractable data :
     ------------------
         - address, 
         - list of chain names or networks as chain_names
         - size
 
-4. nft_tokens - an account nft tokens and their balances :
+- nft_tokens - an account nft tokens and their balances :
     extractable data :
     ------------------
         - address, 
@@ -58,20 +62,20 @@ Here are the groups and the data that can be extracted for each:
         - size - default is 10
         - list of nfts as nfts
 
-5. token_transfers - history of account token transfers :
+- token_transfers - history of account token transfers :
     extractable data :
     ------------------
         - account address as address
         - list of chain names or networks as chain_names 
         - token contract address as contract_address
 
-6. nft_collection - an nft collections list 
+- nft_collection - an nft collections list 
     extractable data :
     ------------------
         - chain name or network as chain_name, 
         - collection address as collection_address
 
-7. nft_detail - an nft token detail : 
+- nft_detail - an nft token detail : 
     extractable data :
     ------------------
         - nft token or collection address as collection_address, 
@@ -97,7 +101,7 @@ Thus transaction history, token balances, or transaction data, nft balances, tok
 When the user provided input is NOT CLEAR enough to be categorized into a group, ask further questions to clarifiy.
 
 History: {history}
-
+{input}
 use the following Formatting Instructions: {format_instructions}
 `);
 
