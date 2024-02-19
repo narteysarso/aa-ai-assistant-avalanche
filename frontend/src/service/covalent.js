@@ -12,7 +12,6 @@ const chains = [
     "optimism-mainnet",
 ];
 
-client.TransactionService.getAllTransactionsForAddress()
 export const getAccountBalance = async({chain = chains, account = "0x",nft = true}) => {
     const resp = await client.BalanceService.getTokenBalancesForWalletAddress(chain, account, {nft});
     if(resp.error) throw new Error(resp.error_message);

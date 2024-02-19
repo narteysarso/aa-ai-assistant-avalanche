@@ -39,6 +39,8 @@ function Chat({ visible, style }) {
 
   if (!visible) return null;
 
+  if(!account) return null;
+
   const chatWidth = screens.lg ? "40vw": screens.md ? "50vw" : screens.sm? "70vw": "90vw";
 
   return (
@@ -61,8 +63,12 @@ function Chat({ visible, style }) {
 export default function ChatButton() {
   const [chatVisible, setChatVisible] = useState(true)
   const screens = useBreakpoint();
+  const {account} = useAccountInfo();
 
   const pushRight = screens.lg ? 30: screens.md ? 40 : screens.sm? 50 : 55;
+
+  if(!account) return null;
+  
   return (
     <>
       <Chat visible={chatVisible} style={{ position: "fixed", bottom: "95px", right: pushRight }} />

@@ -49,6 +49,7 @@ export function WsProvider({ children }) {
         console.log(data);
         addHumanMessage({type, content: data.content, created_at: Date.now(), thread_id});
         changeUI(data.name, data.args);
+       
     }
 
     const changeThreadID = (thread_id) => {

@@ -20,19 +20,19 @@ export default function DefaultConnectButton() {
            }
             return (
                 <Flex>
-                    {!account && <Button onClick={openConnectModal} disabled={!!account}>
-                        Open Connect
+                    {!account && <Button type="primary" onClick={openConnectModal} disabled={!!account}>
+                        Login with Particle
                     </Button>}
 
                     {account && (
                         <>
-                            <Button onClick={openAccountModal} disabled={!account} loading={accountLoading} >
+                            <Button type="primary" onClick={openAccountModal} disabled={!account} loading={accountLoading} >
                                 <Flex>
                                     {account?.substring(0, 5)}...{account?.substring(37)}: {accountBalance} &nbsp; {<Avatar size={"small"} src={chain?.icon} />}
                                 </Flex>
                             </Button>
 
-                            <Button onClick={openChainModal} disabled={!account}>
+                            <Button type="primary" onClick={openChainModal} disabled={!account}>
                                 {chain?.fullname}
                             </Button>
                         </>

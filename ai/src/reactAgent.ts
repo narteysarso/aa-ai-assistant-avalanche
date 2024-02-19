@@ -35,9 +35,11 @@ Here are the groups and the data that can be extracted for each:
 2. transaction_data - a transfer tokens from on account to another over a network or multiple chains or networks : 
     extractable data :
     ------------------
-        - sender address as sender
-        - recipient address as recipient 
-        - amount of tokens as amount, token name as token
+        - address of sender of the token as sender
+        - address of recipient of the token as recipient 
+        - amount of tokens to send as amount
+        - name of token being sent as token
+        - address of token being sent or contract address as contract_address
         - sender chain name or network as senerChainName
         - recipient chain name or network as recipientChainName
 
@@ -85,9 +87,14 @@ Here is a list of supported chain names or networks :
     - avalanche-testnet
     - optimism-mainnet
 
-Replace user chain name with the closest supported chain name. DO NOT ASSUME missing data, ALWAYS set them empty.
+Replace user chain name with the closest supported chain name. 
 
-The user input can only be transaction history, token balances, or transaction data, nft balances, token transfer history, nft collection, or nft details and not two or more categories or groups.
+DO NOT assume or halucinate missing data, ALWAYS set them empty.
+
+Each user input can only fall in one group ONLY . 
+Thus transaction history, token balances, or transaction data, nft balances, token transfer history, nft collection, or nft details and not two or more categories or groups.
+
+When the user provided input is NOT CLEAR enough to be categorized into a group, ask further questions to clarifiy.
 
 History: {history}
 
