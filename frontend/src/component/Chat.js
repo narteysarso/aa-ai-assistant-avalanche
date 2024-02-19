@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
-import { Col, Flex, FloatButton, Grid} from 'antd';
+import { Col, Flex, FloatButton, Grid, notification} from 'antd';
 import { CommentOutlined } from '@ant-design/icons';
 import 'mdb-react-ui-kit/dist/css/mdb.min.css';
 import { } from 'react-time-ago';
@@ -49,6 +49,11 @@ function Chat({ visible, style }) {
   if (!visible) return null;
 
   if(!account) return null;
+
+  if(!isConnected){
+    notification.error({message: "Can connect to AI Chat bot"})
+     return null
+  };
 
   const chatWidth = screens.lg ? "40vw": screens.md ? "50vw" : screens.sm? "70vw": "90vw";
   return (
