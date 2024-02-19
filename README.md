@@ -1,15 +1,4 @@
-# Introduction
- LangExplore
-
- view demo [https://langexplore.vercel.app/](here)
-
-
-# Setup
-
-
-# run
-
-# AI-Enhanced Web3 Access through Natural Language
+# LangExplore: AI-Enhanced Web3 Access through Natural Language
 
 ## Overview
 This project leverages artificial intelligence (AI) to enhance Web3 access using natural language processing (NLP) techniques. With this tool, users can interact with Web3 applications and protocols using human-like language, simplifying the process of interacting with decentralized systems.
