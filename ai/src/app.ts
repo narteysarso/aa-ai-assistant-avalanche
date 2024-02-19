@@ -26,16 +26,19 @@ io.on("connection", (socket: Socket) => {
 
 			const { message, thread_id } = data;
 
-			if (!message) return socket.emit("message", { status: "error", message: "invalid message content" });
+			if (!message) return socket.emit("message", { status: "error", message: "invalid message content", thread_id });
 
 			socketThreadMap.set(socket.id, thread_id);
 
 			const response = await agent.invoke(message, thread_id);
 
-			socket.emit("message", response);
+			socket.emit("message", {...response, thread_id, type: "ai"});
+
 			callback();
 		} catch (error: any) {
+
 			console.error(error);
+
 			callback(`Error: ${error.message}`);
 		}
 	});
@@ -43,7 +46,7 @@ io.on("connection", (socket: Socket) => {
 	socket.on("getThreadMessages", async (thread_id: string, callback = (e?: any) => { }) => {
 		try {
 			const threadMessages = await agent.getMessages(thread_id);
-			socket.emit("message", { status: 'completed', data: threadMessages });
+			socket.emit("threadMessages", {messages: threadMessages });
 			callback();
 		} catch (error: any) {
 			console.error(error);
@@ -58,6 +61,8 @@ io.on("connection", (socket: Socket) => {
 		}
 	});
 
-})
+});
+
+httpServer.listen(port, () => console.log(`server ready at port ${port}`))
 
 

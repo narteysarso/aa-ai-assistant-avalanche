@@ -7,7 +7,6 @@
     "build": "npx tsc",
     "start": "node dist/app.js",
     "dev": "nodemon src/app.ts",
-    "deploy:ai-assistant": "node deploy-assistant.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],

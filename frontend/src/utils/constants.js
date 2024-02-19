@@ -1,3 +1,5 @@
+import { accountActivity, getTokensUI, nftCollectionUi, nftDetailUi, nftTokensUI, tokenTransferUI } from "../service/goldrush"
+
 export const ROLES = {
     assistant: {
         name: "assistant",
@@ -6,10 +8,28 @@ export const ROLES = {
     user: {
         name: "user",
         imgsrc: "https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-6.webp"
+    },
+    ai: {
+        name: "assistant",
+        imgsrc: "https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-5.webp"
+    },
+    human: {
+        name: "user",
+        imgsrc: "https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-6.webp"
     }
 }
 
 export const MESSAGE_STATUSES = ["failed", "cancelled", "expired", "completed"]
+
+export const UIs = {
+    "token_balances": getTokensUI,
+    "account_activity": accountActivity,
+    "nft_tokens": nftTokensUI,
+    "token_transfers": tokenTransferUI,
+    "nft_collection": nftCollectionUi,
+    "nft_detail": nftDetailUi,
+    "transaction_data": () => {}
+}
 
 export const dummyMessages = [
         {

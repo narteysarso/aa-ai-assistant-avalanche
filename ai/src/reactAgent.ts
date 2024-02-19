@@ -21,20 +21,75 @@ const model = new ChatOpenAI({
 
 const prompt = ChatPromptTemplate.fromTemplate(`
 
-You are an assistant. You can extract relevant information and categories them into on of three groups based on the users {input}
+You are an assistant. You extract relevant information from {input} and categories them into any of the following groups
+
+Here are the groups and the data that can be extracted for each:
+
+1. account_activity - Transaction history data : 
+    extractable data :
+    ------------------
+        - address 
+        - chain name or network as chain_name 
+        - size 
+
+2. transaction_data - a transfer tokens from on account to another over a network or multiple chains or networks : 
+    extractable data :
+    ------------------
+        - sender address as sender
+        - recipient address as recipient 
+        - amount of tokens as amount, token name as token
+        - sender chain name or network as senerChainName
+        - recipient chain name or network as recipientChainName
+
+3. token_balances - number of tokens of an account and their balances:
+    extractable data :
+    ------------------
+        - address, 
+        - list of chain names or networks as chain_names
+        - size
+
+4. nft_tokens - an account nft tokens and their balances :
+    extractable data :
+    ------------------
+        - address, 
+        - list of chain names or networks as chain_names
+        - size - default is 10
+        - list of nfts as nfts
+
+5. token_transfers - history of account token transfers :
+    extractable data :
+    ------------------
+        - account address as address
+        - list of chain names or networks as chain_names 
+        - token contract address as contract_address
+
+6. nft_collection - an nft collections list 
+    extractable data :
+    ------------------
+        - chain name or network as chain_name, 
+        - collection address as collection_address
+
+7. nft_detail - an nft token detail : 
+    extractable data :
+    ------------------
+        - nft token or collection address as collection_address, 
+        - chain name or network as chain_name, 
+        - token id as tokenID
+
+
+Here is a list of supported chain names or networks :
+    - eth-mainnet
+    - matic-mainnet
+    - bsc-mainnet
+    - avalanche-mainnet
+    - avalanche-testnet
+    - optimism-mainnet
+
+Replace user chain name with the closest supported chain name. DO NOT ASSUME missing data, ALWAYS set them empty.
+
+The user input can only be transaction history, token balances, or transaction data, nft balances, token transfer history, nft collection, or nft details and not two or more categories or groups.
 
 History: {history}
-
-The groups are:
-1. Transaction history data : extract address, chain name or network as chainName, and size 
-2. transfer transaction data: extract sender address as sender, recipient address as recipient, amount of tokens as amount, token name as token, and sender chain name or network as senerChainName, recipient chain name or network as recipientChainName
-3. account token balances: extract address, list of chain names or networks as chainNames, size, list of tokens as tokens
-4. account nft balances: extract address, list of chain names or networks as chainNames, size, list of nfts as nfts
-5. transfer history of token: extract account address as address, list of chain names or networks as chainNames, token contract address as tokenAddress
-6. nft collections list: chain name or network as chainName, collection address as collectionAddress
-7. an nft token detail: extract nft token or collection address as collectionAddress, chain name or network as chainName, token id as tokenID
-
-The user input can only be transaction history, account token balances, or transaction data and not two or more categories
 
 use the following Formatting Instructions: {format_instructions}
 `);
@@ -46,7 +101,8 @@ const outputParser = StructuredOutputParser.fromZodSchema(
             args: z.array(z.object({
                 name: z.string().describe("field name"),
                 arg: z.any().describe("extracted data")
-            })).describe("list of extracted information")
+            })).describe("list of extracted information"),
+            content: z.string().describe("summary statment or warm comments")
         }).describe("information category"),
         queries: z.array(
             z.object({
@@ -77,7 +133,7 @@ function createChain(thread_id: string) {
         {
             input: (initialInput) => initialInput.input,
             format_instructions: (initialInput) => initialInput.format_instructions,
-            memory: () => memory.loadMemoryVariables()
+            memory: () => memory.loadMemoryVariables({})
         },
         {
             input: (prevInput) => prevInput.input,
@@ -97,7 +153,7 @@ const invoke = async (input: string, thread_id: string) => {
     const response = await chain.invoke({ input, format_instructions: outputParser.getFormatInstructions() })
 
     await memory.saveContext({ input }, { output: response });
-
+    
     return response;
 }
 
@@ -114,7 +170,13 @@ const getThread = (thread_id: string): UpstashRedisChatMessageHistory => {
 }
 const getMessages = async (thread_id: string) => {
     const thread = getThread(thread_id);
-    return await thread.getMessages();
+    const memory = new BufferMemory({
+        memoryKey: "history",
+        chatHistory: thread
+    });
+    const messages = await memory.loadMemoryVariables({});
+    
+    return messages;
 }
 
 export default Object.freeze({

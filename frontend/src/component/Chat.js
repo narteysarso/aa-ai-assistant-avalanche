@@ -6,17 +6,20 @@ import MessageCard from "./MessageCard";
 import { WSContext } from "../context/useWS";
 import MessageForm from "./MessageForm";
 import { dummyMessages } from "../utils/constants";
+import { useAccountInfo } from "@particle-network/connect-react-ui";
 
 const { useBreakpoint } = Grid;
 
 function Chat({ visible, style }) {
-  const { isConnected, messages, emit, threadId } = useContext(WSContext);
+  const { isConnected, changeThreadID, addHumanMessage, messages, emit, threadId } = useContext(WSContext);
+  const { account, accountLoading } = useAccountInfo();
   const ref = useRef(null);
   const screens = useBreakpoint();
 
   const sendMessage = (value, callback = () => { }) => {
     // console.log(callback);
     emit("message", { message: value, thread_id: threadId }, callback);
+    addHumanMessage({type: "human", content: value, created_at: Date.now(), thread_id: threadId});
   }
 
   const scrollToLastMessage = () => {
@@ -25,10 +28,14 @@ function Chat({ visible, style }) {
   };
 
   useEffect(() => {
-    if (isConnected) {
-      scrollToLastMessage();
+    if (!isConnected) {
+      return;
     }
-  }, [isConnected, messages]);
+    scrollToLastMessage();
+    if(account){
+      changeThreadID(account);
+    }
+  }, [isConnected, messages, account, changeThreadID]);
 
   if (!visible) return null;
 
@@ -39,7 +46,7 @@ function Chat({ visible, style }) {
       <Col ref={ref} md="8" style={{ height: "65vh", overflowY: "scroll" }}>
 
         {
-          dummyMessages?.map((msg, idx) => <MessageCard {...msg} key={idx} />)
+          messages?.map((msg, idx) => <MessageCard {...msg} key={idx} />)
         }
 
       </Col>

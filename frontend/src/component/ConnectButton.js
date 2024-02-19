@@ -1,14 +1,16 @@
 import '@particle-network/connect-react-ui/dist/index.css';
 import { ConnectButton, useAccount, useAccountInfo} from '@particle-network/connect-react-ui';
 import { Avatar, Button, Flex } from 'antd';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { getNativeTokenBalance } from '../service/covalent';
+import { WSContext } from '../context/useWS';
 
 
 
 export default function DefaultConnectButton() {
     //use this in react component.
     const [accountBalance, setBalance] = useState(0);
+    
     
 
     return <ConnectButton.Custom style={{ background: "transparent" }}>

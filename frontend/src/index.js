@@ -9,15 +9,18 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { WsProvider } from './context/useWS';
+import { UIProvider } from './context/useUI';
 
 TimeAgo.addDefaultLocale(en);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <WsProvider >
-      <App />
-    </WsProvider>
+    <UIProvider>
+      <WsProvider >
+        <App />
+      </WsProvider>
+    </UIProvider>
   </React.StrictMode>
 );
 

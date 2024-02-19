@@ -8,11 +8,12 @@ import MainLayout from "./component/MainLayout";
 import BuyToken from "./component/BuyToken";
 import { accountActivityUI, getTokensUI, nftTokensUI } from "./service/goldrush";
 import Chat from "./component/Chat";
+import { UIProvider } from "./context/useUI";
+import AISwitcher from "./component/AISwitcher";
 
 export default function App() {
 
 	return (
-
 		<ModalProvider
 			options={{
 				projectId: process.env.REACT_APP_PROJECT_ID,
@@ -24,8 +25,8 @@ export default function App() {
 					Avalanche,
 					AvalancheTestnet
 				],
-				particleWalletEntry: {    //optional: particle wallet config
-					displayWalletEntry: true, //display wallet button when connect particle success.
+				particleWalletEntry: {   
+					displayWalletEntry: true,
 					defaultWalletEntryPosition: WalletEntryPosition.BR,
 					supportChains: [
 						Ethereum,
@@ -33,23 +34,23 @@ export default function App() {
 						Avalanche,
 						AvalancheTestnet
 					],
-					customStyle: {}, //optional: custom wallet style
+					customStyle: {}, 
 				},
-				securityAccount: { //optional: particle security account config
-					//prompt set payment password. 0: None, 1: Once(default), 2: Always
+				securityAccount: { 
+					
 					promptSettingWhenSign: 1,
-					//prompt set master password. 0: None(default), 1: Once, 2: Always
+					
 					promptMasterPasswordSettingWhenLogin: 1
 				},
 				wallets: evmWallets({
-					projectId: process.env.REACT_APP_WALLET_CONNECT_PROJECT_ID, //replace with walletconnect projectId
+					projectId: process.env.REACT_APP_WALLET_CONNECT_PROJECT_ID, 
 					showQrModal: false
 				}),
 			}}
 			theme={'auto'}
-			language={'en'}   //optional：localize, default en
-			walletSort={['Particle Auth', 'Wallet']} //optional：walelt order
-			particleAuthSort={[    //optional：display particle auth items and order
+			language={'en'}  
+			walletSort={['Particle Auth', 'Wallet']} 
+			particleAuthSort={[   
 				'email',
 				'phone',
 				'google',
@@ -57,41 +58,18 @@ export default function App() {
 				'facebook'
 			]}
 		>
-			<GoldRushProvider
-				apikey={process.env.REACT_APP_COVALENT_API_KEY} //use your API key
-
-			>
-				<MainLayout>
-					<Button type="dashed">Hello Click ME</Button>
-					<BuyToken />
-					{getTokensUI({
-						chain_names: [
-							"eth-mainnet",
-							"matic-mainnet",
-							"bsc-mainnet",
-							"avalanche-mainnet",
-							"optimism-mainnet",
-						], account: "0xCb90C09494d399Bc2AF8b0343621639CF83B910B"
-					})}
-					{
-						nftTokensUI({
-							chain_names: [
-								"eth-mainnet",
-								"matic-mainnet",
-								"bsc-mainnet",
-								"avalanche-mainnet",
-								"optimism-mainnet",
-							], account: "0xCb90C09494d399Bc2AF8b0343621639CF83B910B"
-						})
-					}
-					{
-						accountActivityUI({
-							chain_name:"eth-mainnet", account: "0xCb90C09494d399Bc2AF8b0343621639CF83B910B"
-						})
-					}
-					<Chat />
-				</MainLayout>
-			</GoldRushProvider>
+	
+				<GoldRushProvider
+					apikey={process.env.REACT_APP_COVALENT_API_KEY}
+				>
+					<MainLayout>
+						<Button type="dashed">Hello Click ME</Button>
+						<BuyToken />
+						<AISwitcher />
+						<Chat />
+					</MainLayout>
+				</GoldRushProvider>
+			
 		</ModalProvider>
 	)
 }
