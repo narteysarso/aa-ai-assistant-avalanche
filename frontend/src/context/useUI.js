@@ -6,24 +6,25 @@ export const UIContext = createContext(false, null, () => { })
 
 export function UIProvider({children}){
 
-    const [uiName, setUIName] = useState(null);
-    const [uiData, setUiData] = useState(null);
+    const [ui, setUI] = useState(null);
 
     const changeUI = (uiName, uiData) => {
         if(typeof uiName !== "string" || typeof uiData !== "object") return;
         if(!Object.keys(UIs).includes(uiName)) return;
         if(Object.keys(uiData).length < 2) return;
-        setUIName(uiName);
-        setUiData(uiData);
+        setUI({uiName, uiData});
+    }
 
-        console.log(uiName, uiData);
+    const clearUIData = () => {
+        setUI(prev => ({uiName: prev.uiName}));
     }
 
     return (
         <UIContext.Provider value={{
-            uiName,
-            uiData,
-            changeUI
+            uiName: ui?.uiName,
+            uiData: ui?.uiData,
+            changeUI,
+            clearUIData
         }}>
             {children}
         </UIContext.Provider>

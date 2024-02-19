@@ -1,5 +1,5 @@
 import React from 'react';
-import { Flex, Layout, Menu, } from 'antd';
+import { Flex, Layout, Menu, Watermark, } from 'antd';
 import ConnectButton from './ConnectButton';
 
 const { Header, Content, Footer } = Layout;
@@ -8,11 +8,13 @@ export default function MainLayout({ children }) {
 
     return (
         <Layout>
+            <Watermark content="AI x Web3">
+         
             <Header
                 style={{
                     position: 'sticky',
                     top: 0,
-                    zIndex: 1,
+                    zIndex: 4,
                     width: '100%',
                     display: 'flex',
                     alignItems: 'center',
@@ -30,6 +32,7 @@ export default function MainLayout({ children }) {
             <Footer style={{ textAlign: 'center' }}>
                 App ©{new Date().getFullYear()} Created by Nartey
             </Footer>
+            </Watermark>
         </Layout>
     );
 };

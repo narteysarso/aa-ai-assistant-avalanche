@@ -1,15 +1,12 @@
-import { Button } from "antd";
 import { ModalProvider } from '@particle-network/connect-react-ui';
 import { GoldRushProvider } from "@covalenthq/goldrush-kit";
 import { WalletEntryPosition } from '@particle-network/auth';
 import { Ethereum, EthereumGoerli, Avalanche, AvalancheTestnet } from '@particle-network/chains';
 import { evmWallets } from '@particle-network/connect';
 import MainLayout from "./component/MainLayout";
-import BuyToken from "./component/BuyToken";
-import { accountActivityUI, getTokensUI, nftTokensUI } from "./service/goldrush";
 import Chat from "./component/Chat";
-import { UIProvider } from "./context/useUI";
 import AISwitcher from "./component/AISwitcher";
+import Home from "./component/Home";
 
 export default function App() {
 
@@ -58,15 +55,14 @@ export default function App() {
 				'facebook'
 			]}
 		>
-	
 				<GoldRushProvider
 					apikey={process.env.REACT_APP_COVALENT_API_KEY}
 				>
 					<MainLayout>
-						<Button type="dashed">Hello Click ME</Button>
-						<BuyToken />
-						<AISwitcher />
+					<AISwitcher />
 						<Chat />
+						<Home />
+						
 					</MainLayout>
 				</GoldRushProvider>
 			

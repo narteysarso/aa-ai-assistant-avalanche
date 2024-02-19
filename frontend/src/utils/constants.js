@@ -58,83 +58,21 @@ export const dummyMessages = [
     }
 ]
 
-
-export const TOKENADDRESS = {
-   "AVAX": {
-    addresses: {
-        "eth-mainnet":"",
-        "matic-mainnet":"",
-        "bsc-mainnet":"",
-        "avalanche-mainnet":"",
-        "avalanche-tesnet":"",
-        "optimism-mainnet":"",
-    },
-    decimals: "18",
-   },
-   "ETH": {
-    addresses: {
-        "eth-mainnet":"",
-        "matic-mainnet":"",
-        "bsc-mainnet":"",
-        "avalanche-mainnet":"",
-        "avalanche-tesnet":"",
-        "optimism-mainnet":"",
-    },
-    decimals: "18",
-   },
-   "MATIC": {
-    addresses: {
-        "eth-mainnet":"",
-        "matic-mainnet":"",
-        "bsc-mainnet":"",
-        "avalanche-mainnet":"",
-        "avalanche-tesnet":"",
-        "optimism-mainnet":"",
-    },
-    decimals: "18",
-   },
-   "WBTC": {
-    addresses: {
-        "eth-mainnet":"",
-        "matic-mainnet":"",
-        "bsc-mainnet":"",
-        "avalanche-mainnet":"",
-        "avalanche-tesnet":"",
-        "optimism-mainnet":"",
-    },
-    decimals: "18",
-   },
-   "WMatic": {
-    addresses: {
-        "eth-mainnet":"",
-        "matic-mainnet":"",
-        "bsc-mainnet":"",
-        "avalanche-mainnet":"",
-        "avalanche-tesnet":"",
-        "optimism-mainnet":"",
-    },
-    decimals: "18",
-   },
-   "ETH": {
-    addresses: {
-        "eth-mainnet":"",
-        "matic-mainnet":"",
-        "bsc-mainnet":"",
-        "avalanche-mainnet":"",
-        "avalanche-tesnet":"",
-        "optimism-mainnet":"",
-    },
-    decimals: "18",
-   },
-   "ETH": {
-    addresses: {
-        "eth-mainnet":"",
-        "matic-mainnet":"",
-        "bsc-mainnet":"",
-        "avalanche-mainnet":"",
-        "avalanche-tesnet":"",
-        "optimism-mainnet":"",
-    },
-    decimals: "18",
-   },
-}
+export const  ERC20ABI = [{
+    "constant": false,
+    "inputs": [{
+      "name": "_to",
+      "type": "address"
+    }, {
+      "name": "_value",
+      "type": "uint256"
+    }],
+    "name": "transfer",
+    "outputs": [{
+      "name": "",
+      "type": "bool"
+    }],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  }];
