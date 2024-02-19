@@ -36,12 +36,6 @@ To use this tool, follow these steps:
 
 4. Access the tool through your web browser at the specified localhost address.
 
-## Usage
-1. Open the application in your web browser.
-2. Begin typing or speaking your desired action using natural language.
-3. The AI system will process your input and execute the corresponding action on the Web3 platform or protocol.
-4. Follow any prompts or instructions provided by the application to complete your desired task.
-
 ## Contributing
 Contributions to this project are welcome! If you have ideas for improvements, new features, or bug fixes, please submit a pull request. For major changes, please open an issue first to discuss the proposed changes.
 
@@ -53,4 +47,4 @@ This project is licensed under the [MIT License](LICENSE).
 - Thanks to the Web3 community for their ongoing support and contributions to decentralized technologies.
 
 ## Contact
-For any inquiries or feedback, please contact [projectmaintainer@example.com](mailto:projectmaintainer@example.com).
+For any inquiries or feedback, please contact [narteysarso@gmail.com](mailto:narteysarso@gmail.com).
