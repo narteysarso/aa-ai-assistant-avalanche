@@ -1,8 +1,8 @@
 import { MDBIcon } from "mdb-react-ui-kit";
 import { useState } from "react";
 
-export default function MessageForm({ submit = (e, c = () => { }) => { } }) {
-    const [input, setInput] = useState("");
+export default function MessageForm({ text ="default", submit = (e, c = () => { }) => { } }) {
+    const [input, setInput] = useState(text);
     const [isLoading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 

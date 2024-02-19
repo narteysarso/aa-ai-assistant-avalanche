@@ -8,12 +8,14 @@ import { WSContext } from "../context/useWS";
 import MessageForm from "./MessageForm";
 import { dummyMessages } from "../utils/constants";
 import { useAccountInfo, useNetwork } from "@particle-network/connect-react-ui";
+import TemplateActions from "./TemplateActions";
 
 const { useBreakpoint } = Grid;
 
 function Chat({ visible, style }) {
   const { isConnected, changeThreadID, addHumanMessage, messages, emit, threadId } = useContext(WSContext);
   const { account, accountLoading,  } = useAccountInfo();
+  const [actionText, setActionText] = useState("defualt");
   const {chain} = useNetwork()
   const ref = useRef(null);
   const screens = useBreakpoint();
@@ -61,12 +63,12 @@ function Chat({ visible, style }) {
       <Col ref={ref} md="8" style={{ height: "65vh", overflowY: "scroll" }}>
 
         {
-          messages?.map((msg, idx) => <MessageCard {...msg} key={idx} />)
+          [...messages?.map((msg, idx) => <MessageCard {...msg} key={idx} />), <TemplateActions onclick={(text) => setActionText(prev => text)}/>]
         }
 
       </Col>
       <Col sm="12">
-        <MessageForm submit={sendMessage} />
+        <MessageForm key={actionText} text={actionText} submit={sendMessage} />
       </Col>
     </Flex>
 
@@ -78,7 +80,7 @@ export default function ChatButton() {
   const screens = useBreakpoint();
   const {account} = useAccountInfo();
   
-  const pushRight = screens.lg ? 30: screens.md ? 40 : screens.sm? 50 : 55;
+  const pushRight = screens.lg ? 100: screens.md ? 40 : screens.sm? 50 : 45;
 
   if(!account) return null;
   return (
