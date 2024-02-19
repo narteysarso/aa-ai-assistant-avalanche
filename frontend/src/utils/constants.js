@@ -25,7 +25,7 @@ export const MESSAGE_STATUSES = ["failed", "cancelled", "expired", "completed"]
 export const UIs = {
     "token_balances": getTokensUI,
     "account_activity": accountActivity,
-    "nft_tokens": nftTokensUI,
+    "nft_balances": nftTokensUI,
     "token_transfers": tokenTransferUI,
     "nft_collection": nftCollectionUi,
     "nft_detail": nftDetailUi,

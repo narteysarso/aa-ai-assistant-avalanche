@@ -32,7 +32,7 @@ function Chat({ visible, style }) {
   useEffect(() => {
     if(!account || !isConnected) return;
 
-    sendMessage(`My account address is ${account}, on ${chain?.name} network`);
+    sendMessage(`Set my account details to  address ${account} and network ${chain?.fullname}`);
 
   },[account, isConnected, chain])
 

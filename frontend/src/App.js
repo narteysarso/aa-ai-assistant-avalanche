@@ -26,10 +26,10 @@ export default function App() {
 					displayWalletEntry: true,
 					defaultWalletEntryPosition: WalletEntryPosition.BR,
 					supportChains: [
+						AvalancheTestnet,
 						Ethereum,
 						EthereumGoerli,
-						Avalanche,
-						AvalancheTestnet
+						Avalanche
 					],
 					customStyle: {}, 
 				},

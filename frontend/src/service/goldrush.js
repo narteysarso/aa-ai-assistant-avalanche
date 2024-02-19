@@ -1,6 +1,13 @@
 import { AddressActivityListView, NFTCollectionTokenListView, NFTDetailView, NFTWalletTokenListView, TokenBalancesListView, TokenTransfersListView } from "@covalenthq/goldrush-kit"
 
-export const getTokensUI = ({ chain_names, address, hide_small_balances = false }) => {
+export const getTokensUI = ({ chain_names = [
+    "eth-mainnet",
+    "matic-mainnet",
+    "bsc-mainnet",
+    "avalanche-mainnet",
+    "avalanche-testnet",
+    "optimism-mainnet",
+], address, hide_small_balances = false }) => {
     return (
         <TokenBalancesListView
             chain_names={chain_names}
@@ -18,7 +25,14 @@ export const accountActivity = ({ address }) => {
     )
 }
 
-export const nftTokensUI = ({ chain_names, address }) => {
+export const nftTokensUI = ({ chain_names = [
+    "eth-mainnet",
+    "matic-mainnet",
+    "bsc-mainnet",
+    "avalanche-mainnet",
+    "avalanche-testnet",
+    "optimism-mainnet",
+], address }) => {
     return (
         <NFTWalletTokenListView
             chain_names={chain_names}
@@ -27,7 +41,7 @@ export const nftTokensUI = ({ chain_names, address }) => {
     )
 }
 
-export const tokenTransferUI = ({ chain_name, address, contract_address = "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48" }) => {
+export const tokenTransferUI = ({ chain_name= "avalanche-testnet", address, contract_address}) => {
     return (
         <TokenTransfersListView
             chain_name={chain_name}
@@ -37,7 +51,7 @@ export const tokenTransferUI = ({ chain_name, address, contract_address = "0xA0b
     )
 }
 
-export const nftCollectionUi = ({ chain_name, collection_address, handleClick = () => { } }) => {
+export const nftCollectionUi = ({ chain_name= "avalanche-testnet", collection_address, handleClick = () => { } }) => {
     return (
         <NFTCollectionTokenListView
             chain_name={chain_name}
@@ -47,7 +61,7 @@ export const nftCollectionUi = ({ chain_name, collection_address, handleClick = 
     )
 }
 
-export const nftDetailUi = ({ chain_name, collection_address, token_id }) => {
+export const nftDetailUi = ({ chain_name= "avalanche-testnet", collection_address, token_id }) => {
     return (
         <NFTDetailView
             chain_name={chain_name}

@@ -7,12 +7,11 @@ import { UpstashRedisChatMessageHistory } from "@langchain/community/stores/mess
 import { RunnableSequence } from "@langchain/core/runnables";
 
 import * as dotenv from "dotenv";
-import { randomUUID } from "crypto";
 
 dotenv.config();
 
 const model = new ChatOpenAI({
-    modelName: "gpt-3.5-turbo-1106",
+    modelName: "gpt-3.5-turbo",
     temperature: 0.7,
     verbose: true
 });
@@ -20,23 +19,36 @@ const model = new ChatOpenAI({
 
 const prompt = ChatPromptTemplate.fromTemplate(`
 
-You are an assistant, You can answer user questions on the topic of blockchain, and also extract extract relevant information form input and categories them into any of the following groups
+You are an assistant. You help users interact with the blockchain by storing,retrieving, providing, and extracting information for the user.
+Based on user input context and groups context, you can extract relevant information from the input and categories them into any of the following groups whenever applicable.
 
-Here are the groups and the data that can be extracted for each:
-- store account details: user account details. store the extracted data for later use. reference this data in chat history when neccessary
+Here are the groups, the context, and the data that can be extracted for each - the order is NOT important:
+- store account details: 
+    context: save user account details including address, and chain name. user account details is used subsequent chats.
     extractable data :
     ------------------
         - address 
         - chain name or network as chain_name   
-        
-- account_activity - record of past executed transaction history : 
+
+- nft_balances:
+    context: a list of nft tokens in an account/address and their balances
     extractable data :
     ------------------
-        - address 
-        - chain name or network as chain_name 
-        - size 
+        - address, 
+        - list of chain names or networks as chain_names
+        - size default is 10
+        - list of nfts as nfts
 
-- transaction_data - a transfer tokens from on account to another over a network or multiple chains or networks : 
+- token_balances:
+    context: a list of tokens in an account/address and their balances. If chain names is not provided set it empty
+    extractable data :
+    ------------------
+            - address, 
+            - list of chain names as chain_names.
+            - size
+
+- transaction_data:
+    context: transfer tokens from one account to another over a network or multiple chains or networks
     extractable data :
     ------------------
         - address of sender of the token as sender
@@ -46,36 +58,31 @@ Here are the groups and the data that can be extracted for each:
         - address of token being sent or contract address as contract_address
         - sender chain name or network as senerChainName
         - recipient chain name or network as recipientChainName
-
-- token_balances - a list of tokens in an account and their balances:
+            
+- account_activity:
+    context: records of past executed transactions
     extractable data :
     ------------------
-        - address, 
-        - list of chain names or networks as chain_names
-        - size
+        - address 
+        - chain name or network as chain_name 
 
-- nft_tokens - an account nft tokens and their balances :
-    extractable data :
-    ------------------
-        - address, 
-        - list of chain names or networks as chain_names
-        - size - default is 10
-        - list of nfts as nfts
-
-- token_transfers - history of account token transfers :
+- token_transfers:
+    context: history/list of tokens transfered to and from account:
     extractable data :
     ------------------
         - account address as address
-        - list of chain names or networks as chain_names 
-        - token contract address as contract_address
+        - chain name or network as chain_name
+        - contract address as contract_address
 
-- nft_collection - an nft collections list 
+- nft_collection: 
+    context: an nft collections list 
     extractable data :
     ------------------
         - chain name or network as chain_name, 
         - collection address as collection_address
 
-- nft_detail - an nft token detail : 
+- nft_detail:
+    context: an nft token detail 
     extractable data :
     ------------------
         - nft token or collection address as collection_address, 
@@ -84,25 +91,26 @@ Here are the groups and the data that can be extracted for each:
 
 
 Here is a list of supported chain names or networks :
-    - eth-mainnet
-    - matic-mainnet
-    - bsc-mainnet
+    - eth-mainnet 
+    - matic-mainnet 
+    - bsc-mainnet 
     - avalanche-mainnet
     - avalanche-testnet
     - optimism-mainnet
 
-Replace user chain name with the closest supported chain name. 
+Replace chain names or networks in user input with the closest supported chain names. 
 
 DO NOT assume or halucinate missing data, ALWAYS set them empty.
 
 Each user input can only fall in one group ONLY . 
 Thus transaction history, token balances, or transaction data, nft balances, token transfer history, nft collection, or nft details and not two or more categories or groups.
 
-When the user provided input is NOT CLEAR enough to be categorized into a group, ask further questions to clarifiy.
-
-History: {history}
-{input}
 use the following Formatting Instructions: {format_instructions}
+
+chat_history: {history}
+
+{input}
+
 `);
 
 const outputParser = StructuredOutputParser.fromZodSchema(
@@ -163,7 +171,7 @@ const invoke = async (input: string, thread_id: string) => {
     const { chain, memory } = createChain(thread_id);
     const response = await chain.invoke({ input, format_instructions: outputParser.getFormatInstructions() })
 
-    await memory.saveContext({ input }, { output: response });
+    await memory.saveContext({ input }, { output: JSON.stringify(response)});
     
     return response;
 }

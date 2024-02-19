@@ -9,7 +9,7 @@ export default function Home() {
     const { account } = useAccountInfo()
     const { uiName, uiData } = useContext(UIContext);
 
-    if(uiName) return null;
+    if(uiName && account) return null;
     
     return (
         <header class="masthead text-center text-white">

@@ -22,6 +22,14 @@ export default function AISwitcher() {
         if (!uiName || !uiData || !account || !chain || !provider) return null;
 
         const params = uiData.reduce((prev, { name, arg }, idx) => {
+            
+            if(name === "address"){
+                arg = arg || account;
+            }else if(name === "chain_names"){
+                if(!Array.isArray(arg) || arg.length < 1){
+                    return prev;
+                }
+            }
             return { ...prev, [name]: arg }
         }, {});
 
